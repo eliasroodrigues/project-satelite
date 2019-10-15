@@ -2,6 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,19 +14,32 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 import java.awt.event.ActionEvent;
 
+import image.PGMFileReader;
+import image.PGMImage;
+import image.PPMFileReader;
+
 import dao.ControleSatelite;
+import image.PPMFileReader;
+import util.Ppm;
 
 public class GUIGrafico extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField TextAreaChamas;
-	private JTextField TextAumento;
-	private JTextField TextData;
+	private JTextField textAreaChamas;
+	private JTextField textAumento;
+	private JTextField textData;
 	private ControleSatelite controle;
+	private JLabel jLabelFoto = new JLabel("");
 	private JComboBox comboRegiao = new JComboBox();
+	private PGMImage image;
+	private JPanel panel_1 = new JPanel();
 
 	public GUIGrafico(ControleSatelite controle) {
 		GUIGraf();
@@ -56,9 +72,10 @@ public class GUIGrafico extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(12, 74, 202, 138);
 		panel.add(panel_1);
+		
+		panel_1.add(jLabelFoto);
 		
 		JLabel lblNewLabel = new JLabel("Nome Região: ");
 		lblNewLabel.setBounds(23, 25, 125, 15);
@@ -67,6 +84,23 @@ public class GUIGrafico extends JFrame {
 		comboRegiao.setModel(new DefaultComboBoxModel(new String[] {"Sem região"}));
 		comboRegiao.setBounds(280, 20, 158, 24);
 		panel.add(comboRegiao);
+		
+		comboRegiao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nome = comboRegiao.getSelectedItem().toString();
+				String imagePath = "src/files/" + nome + ".ppm";
+				
+				if (!nome.equals("Sem região")) {
+					image = PPMFileReader.readImage(imagePath).convertToPGM();
+					System.out.println(image);
+					draw();
+					
+					int[] cores = Ppm.porcentagem(nome);
+					System.out.println("R: " + cores[0] + "\tG: " + cores[1] + "\tB: " + cores[2]);
+				}
+				
+			}
+		});
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
@@ -77,35 +111,39 @@ public class GUIGrafico extends JFrame {
 		btnVoltar.setBounds(33, 263, 117, 25);
 		panel.add(btnVoltar);
 		
-		JButton btnGerar = new JButton("Gerar");
-		btnGerar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnGerar.setBounds(298, 263, 117, 25);
-		panel.add(btnGerar);
-		
 		JLabel lblDerea = new JLabel("% de área em chamas");
 		lblDerea.setBounds(261, 74, 154, 15);
 		panel.add(lblDerea);
 		
-		TextAreaChamas = new JTextField();
-		TextAreaChamas.setBounds(280, 101, 114, 19);
-		panel.add(TextAreaChamas);
-		TextAreaChamas.setColumns(10);
+		textAreaChamas = new JTextField();
+		textAreaChamas.setEditable(false);
+		textAreaChamas.setBounds(280, 101, 114, 19);
+		panel.add(textAreaChamas);
+		textAreaChamas.setColumns(10);
 		
 		JLabel lblDoAumento = new JLabel("% de aumento ");
 		lblDoAumento.setBounds(280, 132, 135, 15);
 		panel.add(lblDoAumento);
 		
-		TextAumento = new JTextField();
-		TextAumento.setBounds(280, 159, 114, 19);
-		panel.add(TextAumento);
-		TextAumento.setColumns(10);
+		textAumento = new JTextField();
+		textAumento.setEditable(false);
+		textAumento.setBounds(280, 159, 114, 19);
+		panel.add(textAumento);
+		textAumento.setColumns(10);
 		
-		TextData = new JTextField();
-		TextData.setBounds(52, 214, 114, 19);
-		panel.add(TextData);
-		TextData.setColumns(10);
+		textData = new JTextField();
+		textData.setEditable(false);
+		textData.setBounds(52, 214, 114, 19);
+		panel.add(textData);
+		textData.setColumns(10);
 	}
+	
+    public void draw() {
+        MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
+        Image img = Toolkit.getDefaultToolkit().createImage(source);
+        // jLabelFoto = new JLabel(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
+        jLabelFoto.setIcon(new ImageIcon(img));
+        panel_1.add(jLabelFoto);
+        System.out.println("Acabou o draw");
+    }
 }
