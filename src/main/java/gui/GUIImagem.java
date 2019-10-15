@@ -1,25 +1,27 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.io.File;
 import javax.swing.JOptionPane;
-import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
-import javax.swing.ImageIcon;
+import image.PGMFileReader;
+import image.PGMImage;
+import image.PPMFileReader;
 
 import dao.ControleSatelite;
 import util.Ppm;
@@ -29,6 +31,9 @@ public class GUIImagem extends JFrame {
 	private JPanel contentPane;
 	private ControleSatelite controle;
 	private JComboBox comboRegiao = new JComboBox();
+	private PGMImage image;
+	private JLabel jLabelFoto = new JLabel();
+	private JPanel panelImagem = new JPanel();;
 
 	public GUIImagem(ControleSatelite controle) {
 		GUIImag();
@@ -68,10 +73,11 @@ public class GUIImagem extends JFrame {
 		comboRegiao.setModel(new DefaultComboBoxModel(new String[] {"Sem região"}));
 		comboRegiao.setBounds(250, 25, 170, 24);
 		panel.add(comboRegiao);
-
-		JPanel panelImagem = new JPanel();
+		
 		panelImagem.setBounds(121, 98, 200, 138);
 		panel.add(panelImagem);
+		
+		panelImagem.add(jLabelFoto);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
@@ -91,6 +97,11 @@ public class GUIImagem extends JFrame {
 				if (!nome.equals("Sem região")) {
 					try {
 						Ppm.ppmGenerate(nome + ".ppm");	
+						
+						image = PPMFileReader.readImage(imagePath).convertToPGM();
+						System.out.println(image);
+						draw();
+						
 						controle.cadastrarImagem(nome);
 					} catch(IOException e) {
 						e.printStackTrace();
@@ -104,4 +115,13 @@ public class GUIImagem extends JFrame {
 		btnGerar.setBounds(321, 263, 117, 25);
 		panel.add(btnGerar);
 	}
+	
+    public void draw() {
+        MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
+        Image img = Toolkit.getDefaultToolkit().createImage(source);
+        // jLabelFoto = new JLabel(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
+        jLabelFoto.setIcon(new ImageIcon(img));
+        panelImagem.add(jLabelFoto);
+        System.out.println("Acabou o draw");
+    }
 }
