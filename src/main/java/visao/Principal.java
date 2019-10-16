@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: Principal.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package visao;
 
 import dao.ControleSatelite;

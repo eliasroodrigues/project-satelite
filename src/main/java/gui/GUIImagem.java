@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: GUIImagem.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package gui;
 
 import javax.swing.JFrame;
@@ -34,6 +44,14 @@ public class GUIImagem extends JFrame {
 	private JLabel jLabelFoto = new JLabel();
 	private JPanel panelImagem = new JPanel();;
 
+	/**
+	 * Construtor da classe para inicializar a interface e receber
+	 * os dados do controle, assim como receber o nome das regiões
+	 * já cadastradas.
+	 *
+	 * @param controle Recebe o ControleSatelie para ter acesso 
+	 *				   aos dados.
+	 */
 	public GUIImagem(ControleSatelite controle) {
 		GUIImag();
 		this.controle = new ControleSatelite();
@@ -120,6 +138,9 @@ public class GUIImagem extends JFrame {
 		panel.add(btnGerar);
 	}
 	
+	/**
+	 * Método para inserir a imagem no jLabel.
+	 */
     public void draw() {
         MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
         Image img = Toolkit.getDefaultToolkit().createImage(source);

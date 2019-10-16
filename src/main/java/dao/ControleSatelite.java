@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: ControleSatelite.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package dao;
 
 import javax.swing.JOptionPane;
@@ -33,11 +43,11 @@ public class ControleSatelite {
 
 	/**
 	 * Construtor com parâmetros que recebe o nome dos arquivos
-	 * json.
+	 * json e importa os dados.
 	 *
-	 * @param arqEsquadrao Nome do arquivo json para salver os
+	 * @param arqEsquadrao Nome do arquivo json para armazenar os
 	 *					   dados dos esquadrões cadastrados.
-	 * @param arqFloresta  Nome do arquivo json para salvar os
+	 * @param arqFloresta  Nome do arquivo json para armazenar os
 	 *					   dados das regiões cadastradas.
 	 */
 	public ControleSatelite(String arqEsquadrao, String arqFloresta) {
@@ -48,17 +58,32 @@ public class ControleSatelite {
 	}
 
     /**
-     * Método para cadastrar esquadrões na lista de esquadrão. Se
+     * Método para retornar o nome do arquivo json.
+     *
+     * @return nome do arquivo json. 
+     */
+    public String getArqFloresta() { return this.arqFloresta; }
+
+    /**
+     * Método para retornar o nome do arquivo json.
+     *
+     * @return nome do arquivo json. 
+     */
+    public String getArqEsquadrao() { return this.arqEsquadrao; }
+
+    /**
+     * Método para cadastrar esquadrões na lista de esquadrões. Se
      * a lista estiver vazia insere o primeiro esquadrão, se já existir
      * um esqudrão com as mesmas informações ele não é cadastrado e
      * se for um novo esquadrão ele é inserido na lista.
      *
-     * @param nomeEsq Nome do arquivo json para salver os dados dos esquadrões 
-     *                cadastrados.
+     * @param nomeEsq Nome do esquadrão a ser cadastrado.
      * @param especialidadeEsq Tipo da especialidade do esquadrão de acordo com
      *                         o enum.
      * @param tamEsq Valor inteiro que determina o tamanho do esquadrão, ou seja,
      *               quantos membros ele possui.  
+     *
+     * @return 1 se cadastrou ou 0 se não cadastrou.
      */
     public int cadastrarEsquadrao(String nomeEsq, EspecialidadeEsq especialidadeEsq,
             int tamEsq) {
@@ -82,6 +107,20 @@ public class ControleSatelite {
         return 0;
     }
 
+    /**
+     * Método para cadastrar regiões na lista de regiões. Se
+     * a lista estiver vazia insere a primeira região, se já existir
+     * uma região com as mesmas informações ele não é cadastrado e
+     * se for uma nova região ela é inserida na lista.
+     *
+     * @param nomeReg Nome da região a ser cadastrada.
+     * @param areaProtec Enum que determina se é PROTEGIDO ou NAO_PROTEGIDO.
+     * @param NomeEsq Nome do esquadrão alocado à região.
+     * @param imagemRegiao Nome da imagem da região.
+     * @param cores Vetor inteiro de 3 posições da quantidade de cores RGB.
+     *
+     * @return 1 se cadastrou ou 0 se não cadastrou.
+     */
     public int cadastrarRegiao(String nomeReg, ProtecaoFloresta areaProtec,
             String nomeEsq, String imagemRegiao, int[] cores) {
         if (this.floresta.isEmpty()) {
@@ -110,6 +149,13 @@ public class ControleSatelite {
         return 0;
     }
 
+    /**
+     * Método para retornar um esquadrão sendo informado o nome.
+     *
+     * @param nomeEsq Nome do esquadrão a ser retornado.
+     *
+     * @return Esquadrão se o encontrou ou null se não encontrou.
+     */
     public Esquadrao retornaEsquadrao(String nomeEsq) {
         Esquadrao Esq = new Esquadrao();
         for (int i = 0; i < esquadrao.size(); i++) {
@@ -121,13 +167,18 @@ public class ControleSatelite {
         return null;
     }
 
+    /**
+     * Método para cadastrar o nome da imagem na região correta.
+     *
+     * @param imagemRegiao Nome da região a ter a imagem.
+     * @param cores Vetor inteiro de 3 posições da quantidade de cores RGB.
+     */
     public void cadastrarImagem(String imagemRegiao, int[] cores) {
         if (!this.floresta.isEmpty()) {
             for (int i = 0; i < floresta.size(); i++) {
                 if (floresta.get(i).getNomeRegiao().equals(imagemRegiao)) {
                     floresta.get(i).setImagemRegiao(imagemRegiao + ".ppm");
                     floresta.get(i).setCores(cores);
-                    //System.out.println(floresta.get(i));
                     break;
                 }
             }
@@ -137,6 +188,13 @@ public class ControleSatelite {
         }
     }
 
+    /**
+     * Método para verificar se possui um esquadrão na lista de esquadrões.
+     *
+     * @param nomeEsq Nome do esquadrão a ser verificado.
+     *
+     * @return true se não existir ou false se existir.
+     */
     public boolean contemEsquadrao(String nomeEsq) {
         for (Esquadrao esq : esquadrao) {
             if (!esq.getNomeEsq().equals(nomeEsq)) {
@@ -148,6 +206,13 @@ public class ControleSatelite {
         return false;
     }
 
+    /**
+     * Método para verificar se possui uma região na lista de regiões.
+     *
+     * @param nomeReg Nome da região a ser verificada.
+     *
+     * @return true se não existir ou false se existir.
+     */
     public boolean contemFloresta(String nomeReg) {
         for (Floresta flo : floresta) {
             if (!flo.getNomeRegiao().equals(nomeReg)) {
@@ -159,6 +224,13 @@ public class ControleSatelite {
         return false;
     }
 
+    /**
+     * Método para verificar se uma região já possui imagem cadastrada.
+     *
+     * @param nomeReg Nome da região a ser verificada.
+     *
+     * @return true se já possui ou false se não possui.
+     */
     public boolean contemImagem(String nomeReg) {
         for (Floresta flo : floresta) {
             if (flo.getNomeRegiao().equals(nomeReg)) {
@@ -170,6 +242,11 @@ public class ControleSatelite {
         return false;
     }
 
+    /**
+     * Método para retornar um vetor dos nomes das regiões.
+     *
+     * @return vetor de String com nomes das regiões cadastradas.
+     */
     public String[] nomesRegioes() {
         String nomesReg[] = new String[50];
         for (int i = 0; i < floresta.size(); i++) {
@@ -180,6 +257,14 @@ public class ControleSatelite {
         return nomesReg;
     }
 
+    /**
+     * Método para retornar o vetor de cores RGB da imagem da região.
+     *
+     * @param nomeRegiao Nome da região a ser verificado as cores.
+     *
+     * @return vetor do tipo int[3] das cores ou null se a região
+     *         não possuir cores.
+     */
     public int[] coresRegiao(String nomeRegiao) {
         for (int i = 0; i < floresta.size(); i++) {
             if (floresta.get(i) != null) {
@@ -191,6 +276,13 @@ public class ControleSatelite {
         return null;
     }
 
+    /**
+     * Método para importar os dados dos esquadrões do arquivo json.
+     *
+     * @param nomeArq Nome do arquivo a ser lido.
+     *
+     * @return true se deu certo ou false se deu erro na leitura.
+     */
     private boolean importarEsquadrao(String nomeArq) {
         Gson gson = new Gson();
         Esquadrao esquadrao = new Esquadrao();
@@ -216,6 +308,13 @@ public class ControleSatelite {
         return true;
     }
 
+    /**
+     * Método para importar os dados das regiões do arquivo json.
+     *
+     * @param nomeArq Nome do arquivo a ser lido.
+     *
+     * @return true se deu certo ou false se deu erro na leitura.
+     */
     private boolean importarFloresta(String nomeArq) {
         Gson gson = new Gson();
         Floresta floresta = new Floresta();
@@ -243,10 +342,22 @@ public class ControleSatelite {
         return true;
     }
 
+    /**
+     * Método para importar os dados do arquivo json.
+     *
+     * @param arqEsquadrao Nome do arquivo a ser lido.
+     * @param arqFloresta Nome do arquivo a ser lido.
+     *
+     * @return true se deu certo ou false se deu erro na leitura.
+     */
 	public boolean importarDados(String arqEsquadrao, String arqFloresta) {
     	return !(!importarEsquadrao(arqEsquadrao) || !importarFloresta(arqFloresta));
     }
 
+    /**
+     * Método para enviar os dados para os arquivos json. Também já envia-os para
+     * o drive fazendo o upload junto com o upload das imagens.
+     */
     public void enviarDados() throws IOException, GeneralSecurityException {
         if (florestaToJson(this.arqFloresta)) {
             try {
@@ -273,6 +384,13 @@ public class ControleSatelite {
         }
     }
 
+    /**
+     * Método para enviar os dados da lista de regiões para o json.
+     *
+     * @param nomeArq Nome do arquivo a ser lido.
+     *
+     * @return true se deu certo.
+     */
     public boolean florestaToJson(String nomeArq) {
         Gson gson = new Gson();
 
@@ -292,5 +410,4 @@ public class ControleSatelite {
         }
         return true;
     }
-
 }

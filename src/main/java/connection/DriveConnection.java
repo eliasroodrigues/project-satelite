@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: DriveConnection.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 // Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -77,6 +87,15 @@ public class DriveConnection {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
+    /**
+     * Método para conectar-se com a pasta do google drive e fazer o upload dos
+     * arquivos necessários. Também verifica a existência do arquivo e o atualiza
+     * com as novas informações.
+     *
+     * @param nomeArquivo Nome do arquivo a ser feito o upload na pasta.
+     *
+     * @return true se deu certo ou false se não.
+     */
     public static boolean upload(String nomeArquivo) throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -118,10 +137,15 @@ public class DriveConnection {
                 return false;
             }
         }
-
         return true;
     }
 
+    /**
+     * Método para conectar-se com a pasta do google drive e fazer o download dos
+     * arquivos necessários.
+     *
+     * @return true se deu certo ou false se não.
+     */
     public static boolean download() throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -139,24 +163,20 @@ public class DriveConnection {
 
         System.out.println("Arquivos: " + files);
 
-        if (files == null || files.isEmpty()) {
+        if (!(files == null || files.isEmpty())) {
             try {
-                String fileId = "1CV4MnVJEjC9DQzyhgzjIP7MG7-Ed8UVk";
-                OutputStream outputStream = new FileOutputStream("src/files/arqFloresta.json");
-                service.files().export(fileId, "application/vnd.google-apps.script+json")
-                    .executeMediaAndDownloadTo(outputStream);
-                outputStream.close();
-
-                /*OutputStream out1 = new FileOutputStream("src/files/" + files.get(0).getName());
-                Drive.Files.Get request = service.files().get(files.get(0).getId());
-                request.executeMediaAndDownloadTo(out);*/
+                for (int i = 0; i < files.size(); i++) {
+                    OutputStream outputStream = new FileOutputStream("src/files/" + files.get(i).getName());
+                    service.files().get(files.get(i).getId()).executeMediaAndDownloadTo(outputStream);
+                    outputStream.close();
+                }
             } catch(IOException e) {
                 e.printStackTrace();
                 return false;
             }
+        } else {
+            return false;
         }
-
         return true;
     }
-
 }

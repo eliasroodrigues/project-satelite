@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: GUIPrincipal.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package gui;
 
 import java.awt.BorderLayout;
@@ -11,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import javax.swing.JOptionPane;
 
 import dao.ControleSatelite;
 import connection.DriveConnection;
@@ -20,6 +31,13 @@ public class GUIPrincipal extends JFrame {
 	private JPanel contentPane;
 	private ControleSatelite controle;
 
+	/**
+	 * Construtor da classe para inicializar a interface e receber
+	 * os dados do controle.
+	 *
+	 * @param controle Recebe o ControleSatelie para ter acesso 
+	 *				   aos dados.
+	 */
 	public GUIPrincipal(ControleSatelite controle) {
 		GUIPrin();
 		this.controle = new ControleSatelite();
@@ -66,13 +84,20 @@ public class GUIPrincipal extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*try {
-					DriveConnection.download();
+				try {
+					if (DriveConnection.download()) {
+						controle.importarDados(controle.getArqEsquadrao(), controle.getArqFloresta());
+						JOptionPane.showMessageDialog(null, "Dados baixados com sucesso!",
+        					"Informação", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Sem informações para buscar.",
+        					"Informação", JOptionPane.INFORMATION_MESSAGE);	
+					} 
 				} catch(IOException f) {
 					f.printStackTrace();
 				} catch(GeneralSecurityException g) {
 					g.printStackTrace();
-				}*/
+				}
 			}
 		});
 		btnBuscar.setBounds(42, 188, 128, 25);
