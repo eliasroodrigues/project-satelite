@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: Ppm.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package util;
 
 import java.awt.Color;
@@ -18,7 +28,11 @@ public class Ppm {
 	private static int[] cores;
 
 	/**
-	 * @param args the command line arguments
+	 * Método para gerar a imagem ppm.
+	 *
+	 * @param nome Nome da região a ser gerada a imagem.
+	 *  
+	 * @return Vetor int[3] das cores RGB.
 	 */
 	public static int[] ppmGenerate(String nome) throws IOException {
 		createImage(50, 50);
@@ -26,6 +40,12 @@ public class Ppm {
 		return cores;
 	}
 
+	/**
+	 * Método para criar a imagem ppm.
+	 *
+	 * @param width Largura da imagem.
+	 * @param height Altura da imagem.
+	 */
 	public static void createImage(int width, int height){
 		pic = new ArrayList();
 		int[] rgb = new int[3];
@@ -56,20 +76,21 @@ public class Ppm {
 					rgb[2] = (int) (255*factor(width, height, j, i));
 				}
 				matrix += ""+ rgb[0] + " " + rgb[1] + " " + rgb[2] + "  " ;
-/*				if (rgb[0] != 0) {
-					cores[0] += 1;
-				}
-				if (rgb[1] != 0) {
-					cores[1] += 1;
-				}
-				if (rgb[2] != 0) {
-					cores[2] += 1;
-				}*/
 			} 
 			matrix += "\n";
 		}
 	}
 
+	/**
+	 * Método para definir as cores.
+	 *
+	 * @param width Largura da imagem.
+	 * @param height Altura da imagem.
+	 * @param a posição i da matriz.
+	 * @param b posição j da matriz.
+	 *
+	 * @return cor a ser inserida.
+	 */	
 	public static Color getColor(int width, int height, int a, int b){
 		double d1 = ((double) height / width) * a;
 		double d2 = ((double) height / width) * a + width;
@@ -80,6 +101,16 @@ public class Ppm {
 		return Color.white;
 	}
 
+	/**
+	 * Método para definir a intensidade das cores.
+	 *
+	 * @param width Largura da imagem.
+	 * @param height Altura da imagem.
+	 * @param a posição i da matriz.
+	 * @param b posição j da matriz.
+	 *
+	 * @return valor da intensidade.
+	 */	
 	public static double  factor(int width, int height, int a, int b){
 		double factorX = (double) Math.min(a, width - a) / width * 2;
 		double factorY = (double) Math.min(b, height - b) / height * 2;
@@ -87,6 +118,11 @@ public class Ppm {
 		return Math.min(factorX, factorY);
 	}
 
+	/**
+	 * Método para criar a imagem.
+	 *
+	 * @param fn Nome do arquivo.
+	 */	
 	public static void writeImage(String fn) throws FileNotFoundException, IOException {
 		FileOutputStream fos = new FileOutputStream(fn);
 		fos.write(new String(matrix).getBytes());

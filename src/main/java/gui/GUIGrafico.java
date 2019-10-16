@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Classe: GUIGrafico.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package gui;
 
 import java.awt.BorderLayout;
@@ -23,6 +33,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import java.util.Date;
+import java.util.Random;
 import java.text.DateFormat;
 
 import image.PGMFileReader;
@@ -45,6 +56,14 @@ public class GUIGrafico extends JFrame {
 	private PGMImage image;
 	private JPanel panel_1 = new JPanel();
 
+	/**
+	 * Construtor da classe para inicializar a interface e receber
+	 * os dados do controle, assim como receber o nome das regiões
+	 * já cadastradas.
+	 *
+	 * @param controle Recebe o ControleSatelie para ter acesso 
+	 *				   aos dados.
+	 */
 	public GUIGrafico(ControleSatelite controle) {
 		GUIGraf();
 		this.controle = new ControleSatelite();
@@ -105,8 +124,11 @@ public class GUIGrafico extends JFrame {
 
 						System.out.println("R: " + cores[0] + "\tG: " + cores[1] + "\tB: " + cores[2]);
 
+				        Random gerador = new Random();
+				        int valor = gerador.nextInt(201);
+
 						textAreaChamas.setText(String.valueOf((cores[1] / 100)));
-						textAumento.setText(String.valueOf((cores[1] / 150)));
+						textAumento.setText(String.valueOf((cores[1] / valor)));
 						Date d = new Date();
 						DateFormat df = DateFormat.getDateInstance();
 						textData.setText(df.format(d));
@@ -158,6 +180,9 @@ public class GUIGrafico extends JFrame {
 		textData.setColumns(10);
 	}
 	
+	/**
+	 * Método para inserir a imagem no jLabel.
+	 */
     public void draw() {
         MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
         Image img = Toolkit.getDefaultToolkit().createImage(source);

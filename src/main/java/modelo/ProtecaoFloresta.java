@@ -1,3 +1,13 @@
+/*
+*   Trabalho I de POO   
+*
+*   Enum: ProtecaoFloresta.java
+*
+*   Alunos: Ana Paula Pacheco
+*           Elias Eduardo Silva Rodrigues
+*
+*/
+
 package modelo;
 
 public enum ProtecaoFloresta {
@@ -7,12 +17,19 @@ public enum ProtecaoFloresta {
 	
 	private String descricao;
 	
-	ProtecaoFloresta(String descricao) {
-		this.descricao = descricao;
-	}
+	/**
+	 * Constroutor com parâmetro do enum.
+	 *
+	 * @param descricao tipo da áre de proteção:
+	 *					PROTEGIDO,
+	 *					NAO_PROTEGIDO.
+	 */	
+	ProtecaoFloresta(String descricao) { this.descricao = descricao; }
 	
-	public String getDescricao() {
-		return this.descricao;
-	}
-
+	/**
+	 * Método para retornar a descrição
+	 *
+	 * @return Tipo de especialidade.
+	 */
+	public String getDescricao() { return this.descricao; }
 }
