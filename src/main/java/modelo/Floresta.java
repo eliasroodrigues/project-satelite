@@ -6,16 +6,19 @@ public class Floresta {
 	private ProtecaoFloresta areaProtecao;
 	private Esquadrao esquadrao;
 	private String imagemRegiao;
+	private int[] cores;
 	
 	public Floresta() {
 		this.nomeRegiao = "Não informado.";
 		this.areaProtecao = null;
 		this.esquadrao = new Esquadrao();
 		this.imagemRegiao = "Não informado.";
+		this.cores = new int[3];
 	}
 	
 	public Floresta(String nomeRegiao, ProtecaoFloresta areaProtecao,
 			Esquadrao esquadrao, String imagemRegiao) {
+		this();
 		this.nomeRegiao = nomeRegiao;
 		this.areaProtecao = areaProtecao;
 		this.esquadrao = new Esquadrao();
@@ -59,12 +62,21 @@ public class Floresta {
 		this.imagemRegiao = imagemRegiao;
 	}
 	
+	public int[] getCores() {
+		return cores;
+	}
+	
+	public void setCores(int[] cores) {
+		this.cores = cores;
+	}
+
 	public String toString() {
 		String retorno = 
 				"Floresta: " + this.getNomeRegiao() +
 				"\nÁrea de Proteção: " + this.getAreaProtecao() +
 				"\nEsquadrão: " + this.getEsquadrao() +
 				"\nImagem: " + this.getImagemRegiao() +
+				"\nCores: " + this.getCores() +
 				".\n";
 		
 		return retorno;

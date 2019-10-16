@@ -1,4 +1,5 @@
-{"nomeEsq":"Nome do esquadrão.","especialidadeEsq":"COMBATE_INCENDIO","tamEsquadrao":10}
-{"nomeEsq":"TesteA","especialidadeEsq":"COMBATE_INCENDIO","tamEsquadrao":5}
-{"nomeEsq":"TesteB","especialidadeEsq":"RESGATE_ANIMAL","tamEsquadrao":25}
-{"nomeEsq":"TesteC","especialidadeEsq":"RESGATE_INDIGENA","tamEsquadrao":7}
+{"nomeEsq":"Esquadrão Apaga Fogo.","especialidadeEsq":"COMBATE_INCENDIO","tamEsquadrao":25}
+{"nomeEsq":"Esquadrão Resgata Bixo","especialidadeEsq":"RESGATE_ANIMAL","tamEsquadrao":15}
+{"nomeEsq":"Esquadrão Salva índio","especialidadeEsq":"RESGATE_INDIGENA","tamEsquadrao":50}
+{"nomeEsq":"Esquadrão do Foguinho","especialidadeEsq":"COMBATE_INCENDIO","tamEsquadrao":6}
+{"nomeEsq":"Esquadrão Suicida","especialidadeEsq":"RESGATE_ANIMAL","tamEsquadrao":2}

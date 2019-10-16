@@ -29,7 +29,3 @@ dependency-reduced-pom.xml
 
 # Drive API Key
 client_secret.json
-
-# Json files
-arqEsquadrao.json
-arqFloresta.json

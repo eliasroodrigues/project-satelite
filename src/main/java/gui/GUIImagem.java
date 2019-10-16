@@ -6,19 +6,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-
 import java.awt.event.ActionListener;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+
 import image.PGMFileReader;
 import image.PGMImage;
 import image.PPMFileReader;
@@ -93,18 +92,23 @@ public class GUIImagem extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = comboRegiao.getSelectedItem().toString();
 				String imagePath = "src/files/" + nome + ".ppm";
+				int[] cores = new int[3]; 
 
 				if (!nome.equals("Sem região")) {
-					try {
-						Ppm.ppmGenerate(nome + ".ppm");	
-						
-						image = PPMFileReader.readImage(imagePath).convertToPGM();
-						System.out.println(image);
-						draw();
-						
-						controle.cadastrarImagem(nome);
-					} catch(IOException e) {
-						e.printStackTrace();
+					if (!controle.contemImagem(nome)) {
+						try {
+							cores = Ppm.ppmGenerate(nome + ".ppm");	
+							image = PPMFileReader.readImage(imagePath).convertToPGM();
+							System.out.println(image);
+							draw();
+							
+							controle.cadastrarImagem(nome, cores);
+						} catch(IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Região já possui imagem registrada.",
+        					"Informação", JOptionPane.INFORMATION_MESSAGE);	
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Selecione uma região.",
@@ -119,8 +123,7 @@ public class GUIImagem extends JFrame {
     public void draw() {
         MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
         Image img = Toolkit.getDefaultToolkit().createImage(source);
-        // jLabelFoto = new JLabel(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
-        jLabelFoto.setIcon(new ImageIcon(img));
+        jLabelFoto.setIcon(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
         panelImagem.add(jLabelFoto);
         System.out.println("Acabou o draw");
     }

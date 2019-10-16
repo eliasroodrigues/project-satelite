@@ -20,6 +20,10 @@ import java.awt.event.ActionListener;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
+
+import java.util.Date;
+import java.text.DateFormat;
 
 import image.PGMFileReader;
 import image.PGMImage;
@@ -89,14 +93,30 @@ public class GUIGrafico extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nome = comboRegiao.getSelectedItem().toString();
 				String imagePath = "src/files/" + nome + ".ppm";
+				Ppm ppm = new Ppm();
 				
 				if (!nome.equals("Sem região")) {
-					image = PPMFileReader.readImage(imagePath).convertToPGM();
-					System.out.println(image);
-					draw();
-					
-					int[] cores = Ppm.porcentagem(nome);
-					System.out.println("R: " + cores[0] + "\tG: " + cores[1] + "\tB: " + cores[2]);
+					if (controle.contemImagem(nome)) {
+						image = PPMFileReader.readImage(imagePath).convertToPGM();
+						System.out.println(image);
+						draw();
+
+						int[] cores = controle.coresRegiao(nome);
+
+						System.out.println("R: " + cores[0] + "\tG: " + cores[1] + "\tB: " + cores[2]);
+
+						textAreaChamas.setText(String.valueOf((cores[1] / 100)));
+						textAumento.setText(String.valueOf((cores[1] / 150)));
+						Date d = new Date();
+						DateFormat df = DateFormat.getDateInstance();
+						textData.setText(df.format(d));
+					} else {
+						textAreaChamas.setText("");
+						textAumento.setText("");
+						textData.setText("");
+						JOptionPane.showMessageDialog(null, "Região sem imagem registrada.",
+        					"Informação", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 				
 			}
@@ -141,8 +161,7 @@ public class GUIGrafico extends JFrame {
     public void draw() {
         MemoryImageSource source = new MemoryImageSource(image.getWidth(), image.getHeight(), ColorModel.getRGBdefault(), image.toRGBModel(), 0, image.getWidth());
         Image img = Toolkit.getDefaultToolkit().createImage(source);
-        // jLabelFoto = new JLabel(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
-        jLabelFoto.setIcon(new ImageIcon(img));
+        jLabelFoto.setIcon(new ImageIcon(img.getScaledInstance(200, 138, Image.SCALE_SMOOTH)));
         panel_1.add(jLabelFoto);
         System.out.println("Acabou o draw");
     }

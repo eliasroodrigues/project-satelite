@@ -83,13 +83,14 @@ public class ControleSatelite {
     }
 
     public int cadastrarRegiao(String nomeReg, ProtecaoFloresta areaProtec,
-            String nomeEsq, String imagemRegiao) {
+            String nomeEsq, String imagemRegiao, int[] cores) {
         if (this.floresta.isEmpty()) {
             Floresta flor = new Floresta();
             flor.setNomeRegiao(nomeReg);
             flor.setAreaProtecao(areaProtec);
             flor.setEsquadrao(retornaEsquadrao(nomeEsq));
             flor.setImagemRegiao(imagemRegiao);
+            flor.setCores(cores);
             floresta.add(flor);
             System.out.println(flor.toString());
             return 1;
@@ -100,6 +101,7 @@ public class ControleSatelite {
                 flor.setAreaProtecao(areaProtec);
                 flor.setEsquadrao(retornaEsquadrao(nomeEsq));
                 flor.setImagemRegiao(imagemRegiao);
+                flor.setCores(cores);
                 floresta.add(flor);
                 System.out.println(flor.toString());
                 return 1;
@@ -119,12 +121,13 @@ public class ControleSatelite {
         return null;
     }
 
-    public void cadastrarImagem(String imagemRegiao) {
+    public void cadastrarImagem(String imagemRegiao, int[] cores) {
         if (!this.floresta.isEmpty()) {
             for (int i = 0; i < floresta.size(); i++) {
                 if (floresta.get(i).getNomeRegiao().equals(imagemRegiao)) {
                     floresta.get(i).setImagemRegiao(imagemRegiao + ".ppm");
-                    // System.out.println(floresta.get(i).toString());
+                    floresta.get(i).setCores(cores);
+                    //System.out.println(floresta.get(i));
                     break;
                 }
             }
@@ -156,6 +159,17 @@ public class ControleSatelite {
         return false;
     }
 
+    public boolean contemImagem(String nomeReg) {
+        for (Floresta flo : floresta) {
+            if (flo.getNomeRegiao().equals(nomeReg)) {
+                if (!flo.getImagemRegiao().equals("Não informado")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public String[] nomesRegioes() {
         String nomesReg[] = new String[50];
         for (int i = 0; i < floresta.size(); i++) {
@@ -164,6 +178,17 @@ public class ControleSatelite {
             }
         }
         return nomesReg;
+    }
+
+    public int[] coresRegiao(String nomeRegiao) {
+        for (int i = 0; i < floresta.size(); i++) {
+            if (floresta.get(i) != null) {
+                if (floresta.get(i).getNomeRegiao().equals(nomeRegiao)) {
+                    return floresta.get(i).getCores();
+                }
+            }
+        }
+        return null;
     }
 
     private boolean importarEsquadrao(String nomeArq) {
@@ -206,7 +231,8 @@ public class ControleSatelite {
                     cadastrarRegiao(floresta.getNomeRegiao(),
                                     floresta.getAreaProtecao(),
                                     floresta.getEsq(),
-                                    floresta.getImagemRegiao());
+                                    floresta.getImagemRegiao(),
+                                    floresta.getCores());
                     System.out.println(floresta.toString());
                     linha = leitor.readLine();
                 }
