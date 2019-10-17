@@ -1,0 +1,3 @@
+{"nomeRegiao":"Região Norte","areaProtecao":"PROTEGIDO","esquadrao":{"nomeEsq":"Esquadrão de Fogo","especialidadeEsq":"COMBATE_INCENDIO","tamEsquadrao":50},"imagemRegiao":"Região Norte.ppm","cores":[1274,1275,0]}
+{"nomeRegiao":"Região Sul","areaProtecao":"NAO_PROTEGIDO","esquadrao":{"nomeEsq":"Esquadrão de Animal","especialidadeEsq":"RESGATE_ANIMAL","tamEsquadrao":10},"imagemRegiao":"Região Sul.ppm","cores":[1274,1275,0]}
+{"nomeRegiao":"Região Oeste","areaProtecao":"PROTEGIDO","esquadrao":{"nomeEsq":"Esquadrão de Índio","especialidadeEsq":"RESGATE_INDIGENA","tamEsquadrao":6},"imagemRegiao":"Não informado","cores":[0,0,0]}
